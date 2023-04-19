@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(20,20,20);
+    background-color: rgb(20, 20, 20);
     text-align: center;
     font-family: 'Piazzolla', serif;
     color: white;
@@ -18,13 +18,13 @@ label {
 }
 
 .picpok {
-    width:  150px;
+    width: 150px;
     height: 150px;
     object-fit: cover;
 }
 
 .picpokShiny {
-    width:  288px;
+    width: 288px;
     height: 288px;
     object-fit: cover;
 }
@@ -40,7 +40,7 @@ label {
 }
 
 h1 {
-    margin:0;
+    margin: 0;
 }
 
 h2 {
@@ -67,11 +67,11 @@ h3 {
 }
 
 #FP1 {
-    padding-bottom:4px;
+    padding-bottom: 4px;
 }
 
 #FP2 {
-    padding-bottom:4px;
+    padding-bottom: 4px;
 }
 
 #R2 {
@@ -85,10 +85,10 @@ h3 {
 #bottom {
     font-family: 'Arial', serif;
     font-size: 12px;
-    position: absolute; 
-    bottom: 0; 
-    left: 0; 
-    width: 100%; 
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     text-align: center
 }
 
@@ -123,26 +123,40 @@ h3 {
 }
 
 a:link {
-    color:rgb(30,130,230);
+    color: rgb(30, 130, 230);
     background-color: transparent;
     text-decoration: underline;
-  }
-  
-  a:visited {
-    color:darkorchid;
+}
+
+a:visited {
+    color: darkorchid;
     background-color: transparent;
-  }
-  
-  a:active {
-    color:darkorchid;
+}
+
+a:active {
+    color: darkorchid;
     background-color: transparent;
     text-decoration: dashed;
-  }
+}
 
-  input {
+input {
     font-size: inherit;
     font-family: inherit;
-  }
+}
+
+.fusion-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* grid-template-columns: repeat(8, 1fr); */
+    gap: 1em;
+}
+.fusion-list > .fusion{
+    width: 200px;
+}
+.fusion-list > .fusion img{
+    margin: 0 auto;
+}
 
 /* MOBILE STYLE */
 @media only screen and (max-width: 425px) {
@@ -156,8 +170,8 @@ a:link {
 
     .calculator input {
         box-sizing: border-box;
-        padding   : 0.5rem;
-        width     : 100%;
+        padding: 0.5rem;
+        width: 100%;
     }
 
     .inputs>* {
@@ -169,9 +183,9 @@ a:link {
     }
 
     .buttons {
-        display  : flex;
+        display: flex;
         flex-flow: row nowrap;
-        gap      : 0.5rem;
+        gap: 0.5rem;
     }
 
     .buttons>* {

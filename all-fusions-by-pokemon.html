@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Fusion Calculator</title>
+    <link rel="stylesheet" href="poke.css">
+    <link href="https://fonts.googleapis.com/css2?family=Piazzolla:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Get all Infinite Fusion for a Pokémon</h1>
+    <div id="text">
+        <h4>
+            <br>
+            Only works with <a href="https://infinitefusion.fandom.com/wiki/Pokédex">natives mons available</a> in
+            Pokémon Infinite Fusion v5 !<br>
+            This project was created by <a href="https://twitter.com/SDM_0_">SDM0</a>,
+            then maintained by <a href="https://github.com/Aegide">Aegide</a>.<br>
+            The data used is from the game, but is mostly based on generation 7.
+            <br><br>
+            <i>
+                <span class="green-text">Custom sprites</span> in <span class="green-text">green</span> are made by artists,<br>
+                from the <a href="https://discord.com/invite/2yynWRvBrB">Infinite Fusion Discord</a>
+                and <a href="https://www.reddit.com/r/PokemonInfiniteFusion/">Reddit</a>.
+            </i>
+            <br><br>
+            <i>
+                <span class="red-text">Generated sprites</span> in <span class="red-text">red</span> are from 
+                <a href="https://japeal.com/pkm/">Japeal</a>.<br>
+                They were extracted and <a href="https://github.com/Aegide/autogen-fusion-sprites/commits/master/Battlers">fixed</a>
+                by <a href="https://github.com/Aegide">Aegide</a>.
+            </i>
+        </h4>
+        <br>
+		<div class="calculator">
+			<div id="t1" class="inputs">
+				<label for="fname1">Pokémon&nbsp;:</label>
+				<input list="dlPkmn" type="text" id="fname1" name="fname1" value="" autocomplete="off">
+				<input id="random1" type="button" class="button" value="R1" onclick="randomFirstPoke()">
+			</div>		
+			<div class="buttons">
+				<input id="button" type="button" class="button" value="Get" onclick="getPokeFusion()">
+			</div>
+		</div>
+	</div>
+	<br />
+    <sector id="result" class="fusion-list">
+    </sector>
+    <!--<p id="bottom">All rights reserved to Pokémon</p>-->
+</body>
+<script src="infiniteFusionData.js"></script>
+<script src="poke.js"></script>
+</html>
