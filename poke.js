@@ -9,6 +9,10 @@ var mon1types, mon2types;
 var mon1abilities, mon2abilities;
 var jsonBody;
 
+const pokeAPI = 'https://pokeapi.co/api/v2/pokemon/';
+const customSpritesDir = 'https://raw.githubusercontent.com/Aegide/custom-fusion-sprites/main/CustomBattlers/';
+const generatedSpritesDir = 'https://raw.githubusercontent.com/Aegide/autogen-fusion-sprites/master/Battlers/';
+
 //Adding options to datalist
 var box1 = document.getElementById('fname1');
 var box2 = document.getElementById('fname2');
@@ -192,7 +196,7 @@ function fusePoke() {
 
 			// First request - version A
 			var xhr1a = new XMLHttpRequest();
-			var url1a = 'https://pokeapi.co/api/v2/pokemon/' + mon1;
+			var url1a = pokeAPI + mon1;
 			xhr1a.open('GET', url1a, true);
 			xhr1a.send();
 			xhr1a.onload = function () {
@@ -204,7 +208,7 @@ function fusePoke() {
 					} else {
 						//First request - version B
 						var xhr1b = new XMLHttpRequest();
-						var url1b = 'https://pokeapi.co/api/v2/pokemon/' + mon1 + '/';
+						var url1b = pokeAPI + mon1 + '/';
 						xhr1b.open('GET', url1b, true);
 						xhr1b.send();
 						xhr1b.onload = function () {
@@ -225,75 +229,6 @@ function fusePoke() {
 					alert('PokeAPI is unreachable (1a)');
 				}
 			};
-		}
-	}
-}
-
-function getPokeFusion() {
-	monName = getPokemonName('fname1');
-	if (!monName) {
-		buttons = document.getElementsByClassName('button');
-		for (let i = 0; i < buttons.length; i++) {
-			buttons[i].disabled = false;
-		}
-		alert('Please fill the two text inputs!');
-	} else {
-		// TODO name fix
-
-		let monId = null;
-		ids.forEach(function ([name, id]) {
-			if (name === monName) {
-				monId = id;
-			}
-		});
-		if (monId == null) {
-			alert("The pokemon isn't in the fangame!");
-		} else {
-			fusions = [
-				{
-					id: `${monId}.${monId}`,
-					name: `${monName}/${monName}`,
-				},
-			];
-			ids.forEach(function ([name, id]) {
-				if (monId !== id) {
-					fusions.push({
-						id: `${monId}.${id}`,
-						name: `${monName}/${name}`,
-					});
-					fusions.push({
-						id: `${id}.${monId}`,
-						name: `${name}/${monName}`,
-					});
-				}
-			});
-            // TODO on error mettre la fallback
-			let html = fusions.reduce((res, { id, name }) => {
-				// TODO make a const
-				let fusionUrl =
-					'https://raw.githubusercontent.com/Aegide/custom-fusion-sprites/main/CustomBattlers/' +
-					id + '.png';
-                // TODO ne pas utiliser cette methode
-				// if (!doesImageExists(fusionUrl)) {
-					// Screenshot of autogen pokemon
-					// TODO make a const
-					const fallbackFusionRepository =
-						'https://raw.githubusercontent.com/Aegide/autogen-fusion-sprites/master/Battlers/';
-					let headId = id.split('.')[0];
-					fusionUrl = fallbackFusionRepository + headId + '/' + id  + '.png';
-				// }
-				return (
-					res +
-					`<div class="fusion">
-                        <div>
-                            <span id="dexnumber1">&nbsp;</span><span>&nbsp;</span>
-                        </div>
-                        <img class="picpok" title="${name}" alt="${name}" src="${fusionUrl}" width="150" height="150">
-                        <div>${name}</div>
-                    </div>`
-				);
-			}, '');
-			document.getElementById('result').innerHTML = html;
 		}
 	}
 }
@@ -377,7 +312,7 @@ function fuseFirstPoke(jsonString) {
 		//#region Request
 		// Second request - version A
 		var xhr2a = new XMLHttpRequest();
-		var url2a = 'https://pokeapi.co/api/v2/pokemon/' + mon2;
+		var url2a = pokeAPI + mon2;
 		xhr2a.open('GET', url2a, true);
 		xhr2a.send();
 		xhr2a.onload = function () {
@@ -389,7 +324,7 @@ function fuseFirstPoke(jsonString) {
 				} else {
 					// Second request - version B
 					var xhr2b = new XMLHttpRequest();
-					var url2b = 'https://pokeapi.co/api/v2/pokemon/' + mon2 + '/';
+					var url2b = pokeAPI + mon2 + '/';
 					xhr2b.open('GET', url2b, true);
 					xhr2b.send();
 					xhr2b.onload = function () {
@@ -805,7 +740,7 @@ function typeId(ftype) {
 //Custom sprite fusion function
 function showFusion(elementId, fusionId, elementFusionId) {
 	fusionUrl =
-		'https://raw.githubusercontent.com/Aegide/custom-fusion-sprites/main/CustomBattlers/' +
+		customSpritesDir +
 		fusionId;
 	document.getElementById(elementId).title = fusionId;
 
@@ -815,12 +750,98 @@ function showFusion(elementId, fusionId, elementFusionId) {
 	} else {
 		//Screenshot of autogen pokemon
 		fallbackFusionRepository =
-			'https://raw.githubusercontent.com/Aegide/autogen-fusion-sprites/master/Battlers/';
+			generatedSpritesDir;
 		headId = fusionId.split('.')[0];
 		fallbackFusionUrl = fallbackFusionRepository + headId + '/' + fusionId;
 		document.getElementById(elementId).src = fallbackFusionUrl;
 		document.getElementById(elementFusionId).style.color = 'red';
 	}
+}
+
+function getPokeFusion() {
+	monName = getPokemonName('fname1');
+	if (!monName) {
+		buttons = document.getElementsByClassName('button');
+		for (let i = 0; i < buttons.length; i++) {
+			buttons[i].disabled = false;
+		}
+		alert('Please fill the two text inputs!');
+	} else {
+		// TODO name fix
+			//Special mon selector: Giratina, Deoxys
+			if (nameException.includes(mon1)) {
+				mon1 = nameFix[nameException.indexOf(mon1)];
+			}
+
+			if (nameException.includes(mon2)) {
+				mon2 = nameFix[nameException.indexOf(mon2)];
+			}
+
+		let monId = null;
+		let monNameLower = monName.toLowerCase();
+		ids.forEach(function ([name, id]) {
+			if (name.toLowerCase() === monNameLower) {
+				monId = id;
+			}
+		});
+		if (monId == null) {
+			alert("The pokemon isn't in the fangame!");
+		} else {
+			fusions = [
+				{
+					id: `${monId}.${monId}`,
+					name: `${monName}/${monName}`,
+				},
+			];
+			ids.forEach(function ([name, id]) {
+				if (monId !== id) {
+					fusions.push({
+						id: `${monId}.${id}`,
+						name: `${monName}/${name}`,
+					});
+					fusions.push({
+						id: `${id}.${monId}`,
+						name: `${name}/${monName}`,
+					});
+				}
+			});
+			// TODO faire une pagination
+			let html = fusions.reduce((res, { id, name }) => {
+				let fusionUrl = customSpritesDir + id + '.png';
+				return (
+					res +
+					`<div class="fusion">
+                        <img 
+					        data-id="${id}" 	
+					        class="picpok" 
+					        title="${name}" 
+					        alt="${name}" 
+					        src="${fusionUrl}" 
+					        width="150" 
+					        height="150"
+					    >
+                        <div>${name}</div>
+                        <div>${id}</div>
+                    </div>`
+				);
+			}, '');
+			document.getElementById('result').innerHTML = html;
+			var pokeImgs = document.getElementsByClassName('picpok');
+			for(let pokeImg of pokeImgs){
+				pokeImg.addEventListener('error', imageFallback);
+			}
+		}
+	}
+}
+
+function imageFallback(e) {
+	// const fallbackFusionRepository = generatedSpritesDir;
+	// const id = e.target.dataset.id;
+	// const headId = id.split('.')[0];
+	// fallbackUrl = fallbackFusionRepository + headId + '/' + id  + '.png';
+	// e.target.src = fallbackUrl;
+	let parent = e.target.parentNode;
+	parent.parentNode.removeChild(parent);
 }
 
 //Error detection
@@ -929,7 +950,7 @@ function showShinies(randomHead, randomBody) {
 	document.getElementById('fusionid1').style.color = 'green';
 
 	picShinySrc =
-		'https://raw.githubusercontent.com/Aegide/custom-fusion-sprites/main/CustomBattlers/' +
+		customSpritesDir +
 		(headId + 1) +
 		'.' +
 		(bodyId + 1) +
@@ -937,7 +958,7 @@ function showShinies(randomHead, randomBody) {
 
 	if (!doesImageExists(picShinySrc)) {
 		picShinySrc =
-			'https://raw.githubusercontent.com/Aegide/autogen-fusion-sprites/master/Battlers/' +
+			generatedSpritesDir +
 			(headId + 1) +
 			'/' +
 			(headId + 1) +
